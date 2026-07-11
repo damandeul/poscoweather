@@ -198,7 +198,7 @@ export default function Dashboard() {
       <footer className="mx-auto w-full max-w-350 px-4 pb-8 pt-2 sm:px-6">
         <p className="text-[11px] leading-relaxed text-muted">
           기상 데이터: Open-Meteo (KMA 모델 포함) · 레이더: RainViewer · 위성:
-          NICT Himawari · CCTV: 국가교통정보센터(ITS) 오픈API · 본 대시보드의
+          기상청 천리안 GK2A · CCTV: 국가교통정보센터(ITS) 오픈API · 본 대시보드의
           경고·지수 표시는 자체 판정 기준으로, 기상청 공식 특보를 대체하지
           않습니다.
         </p>

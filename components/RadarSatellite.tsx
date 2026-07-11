@@ -265,18 +265,22 @@ export default function RadarSatellite({
                   <img
                     key={f.url}
                     src={f.url}
-                    alt={i === frameIdx ? "히마와리 위성 영상 (한반도 주변)" : ""}
+                    alt={
+                      i === frameIdx
+                        ? "천리안 GK2A 위성 영상 (한반도, 주야간 합성)"
+                        : ""
+                    }
                     className="absolute inset-0 h-full w-full object-cover transition-opacity duration-200"
                     style={{
                       opacity: i === frameIdx ? 1 : 0,
-                      // 히마와리 풀디스크 4분할 타일(1,0) 내 한반도 위치 (정지궤도 투영 계산값)
-                      objectPosition: "59% 68%",
+                      // GK2A 한반도(ko020lc) 이미지에서 한반도가 화면 중앙에 오는 크롭
+                      objectPosition: "50% 67%",
                     }}
                     loading={i === satFrames.length - 1 ? "eager" : "lazy"}
                   />
                 ))}
                 <span className="absolute bottom-2 right-2.5 rounded bg-black/55 px-2 py-0.5 text-[10px] text-white/80 backdrop-blur-sm">
-                  Himawari 트루컬러 · NICT — 야간에는 어둡게 보입니다
+                  천리안 GK2A 주야간 합성 · 기상청
                 </span>
               </>
             ) : (
