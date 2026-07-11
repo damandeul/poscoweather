@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* 관제실 스타일 다크 테마 (고정) — dataviz 레퍼런스 다크 팔레트 기반 */
+:root {
+  --background: #0d0d0d;
+  --foreground: #ffffff;
+  --surface: #1a1a19;
+  --surface-2: #232321;
+  --ink-2: #c3c2b7;
+  --muted: #898781;
+  --grid: #2c2c2a;
+  --hairline: rgba(255, 255, 255, 0.1);
+  --baseline: #383835;
+
+  --s-blue: #3987e5;
+  --s-aqua: #199e70;
+
+  --st-good: #0ca30c;
+  --st-warning: #fab219;
+  --st-serious: #ec835a;
+  --st-critical: #d03b3b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-grid: var(--grid);
+  --color-hairline: var(--hairline);
+  --color-baseline: var(--baseline);
+  --color-s-blue: var(--s-blue);
+  --color-s-aqua: var(--s-aqua);
+  --color-st-good: var(--st-good);
+  --color-st-warning: var(--st-warning);
+  --color-st-serious: var(--st-serious);
+  --color-st-critical: var(--st-critical);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
