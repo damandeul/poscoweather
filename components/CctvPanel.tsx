@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SiteId } from "@/lib/sites";
 import type { CctvCamera } from "@/app/api/cctv/route";
+import { VideoIcon } from "./icons";
 
 interface CctvResponse {
   configured: boolean;
@@ -82,11 +83,14 @@ export default function CctvPanel({ siteId }: { siteId: SiteId }) {
   }, [selected]);
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-hairline bg-surface p-4">
+    <div className="glass flex flex-col gap-4 p-5">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold">주변 CCTV (국가교통정보센터)</h3>
+        <h3 className="flex items-center gap-2 text-[13px] font-semibold tracking-tight text-ink-2">
+          <VideoIcon className="h-4 w-4 text-muted" />
+          주변 CCTV
+        </h3>
         {data?.configured && (
-          <span className="text-[11px] text-muted">
+          <span className="tnum text-[11px] text-muted">
             {data.cameras.length}대 · 가까운 순
           </span>
         )}
@@ -99,31 +103,34 @@ export default function CctvPanel({ siteId }: { siteId: SiteId }) {
       )}
 
       {data && !data.configured && (
-        <div className="rounded-lg bg-surface-2 p-4 text-sm leading-6 text-ink-2">
-          <p className="font-medium text-foreground">
+        <div className="glass-inset p-4 text-sm leading-relaxed text-ink-2">
+          <p className="font-semibold tracking-tight text-foreground">
             CCTV 연동에는 무료 API 키가 필요합니다
           </p>
-          <ol className="mt-2 list-decimal space-y-1 pl-5">
+          <ol className="mt-2.5 list-decimal space-y-1.5 pl-5">
             <li>
               <a
                 href="https://www.its.go.kr/opendata/"
                 target="_blank"
                 rel="noreferrer"
-                className="text-s-blue underline underline-offset-2"
+                className="text-accent underline underline-offset-2 transition-colors hover:text-foreground"
               >
-                국가교통정보센터 오픈데이터 (its.go.kr/opendata)
+                국가교통정보센터 오픈데이터
               </a>
               에서 회원가입 후 <b>오픈API 인증키</b>를 신청합니다 (즉시 발급).
             </li>
             <li>
-              프로젝트 루트의 <code className="rounded bg-background px-1.5 py-0.5">.env.local</code>{" "}
+              프로젝트 루트의{" "}
+              <code className="rounded bg-white/8 px-1.5 py-0.5 text-xs">
+                .env.local
+              </code>{" "}
               파일에{" "}
-              <code className="rounded bg-background px-1.5 py-0.5">
+              <code className="rounded bg-white/8 px-1.5 py-0.5 text-xs">
                 ITS_API_KEY=발급받은키
               </code>{" "}
               를 저장합니다.
             </li>
-            <li>개발 서버를 재시작하면 제철소 주변 도로 CCTV가 표시됩니다.</li>
+            <li>서버를 재시작하면 제철소 주변 도로 CCTV가 표시됩니다.</li>
           </ol>
         </div>
       )}
@@ -136,7 +143,7 @@ export default function CctvPanel({ siteId }: { siteId: SiteId }) {
 
       {selected && (
         <div>
-          <div className="relative aspect-video overflow-hidden rounded-lg bg-black">
+          <div className="relative aspect-video overflow-hidden rounded-xl border border-hairline bg-black shadow-[0_16px_40px_-16px_rgba(4,12,28,0.7)]">
             <video
               ref={videoRef}
               className="h-full w-full object-contain"
@@ -149,12 +156,14 @@ export default function CctvPanel({ siteId }: { siteId: SiteId }) {
                 {playError}
               </p>
             )}
-            <span className="absolute left-2 top-2 flex items-center gap-1.5 rounded bg-black/60 px-2 py-0.5 text-[11px] text-white">
-              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-st-critical" />
+            <span className="absolute left-2.5 top-2.5 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-semibold tracking-widest text-white backdrop-blur-sm">
+              <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-st-critical" />
               LIVE
             </span>
           </div>
-          <p className="mt-2 text-sm font-medium">{selected.name}</p>
+          <p className="mt-2.5 text-sm font-semibold tracking-tight">
+            {selected.name}
+          </p>
           <p className="tnum text-[11px] text-muted">
             제철소에서 약 {selected.distanceKm.toFixed(1)} km
           </p>
@@ -167,10 +176,10 @@ export default function CctvPanel({ siteId }: { siteId: SiteId }) {
             <li key={cam.id}>
               <button
                 onClick={() => setSelected(cam)}
-                className={`flex w-full items-baseline justify-between gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors ${
+                className={`flex w-full items-baseline justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-all duration-300 ${
                   selected?.id === cam.id
-                    ? "bg-s-blue/15 text-foreground"
-                    : "text-ink-2 hover:bg-surface-2"
+                    ? "bg-accent/12 font-medium text-foreground"
+                    : "text-ink-2 hover:bg-white/5 hover:text-foreground active:scale-[0.99]"
                 }`}
               >
                 <span className="min-w-0 flex-1 truncate">{cam.name}</span>

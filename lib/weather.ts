@@ -206,46 +206,39 @@ export async function fetchSiteWeather(site: Site): Promise<SiteWeather> {
 
 /* ---------- 표기 도우미 ---------- */
 
-const WMO: Record<number, { text: string; icon: string; nightIcon?: string }> =
-  {
-    0: { text: "맑음", icon: "☀️", nightIcon: "🌙" },
-    1: { text: "대체로 맑음", icon: "🌤️", nightIcon: "🌙" },
-    2: { text: "구름 조금", icon: "⛅", nightIcon: "☁️" },
-    3: { text: "흐림", icon: "☁️" },
-    45: { text: "안개", icon: "🌫️" },
-    48: { text: "착빙성 안개", icon: "🌫️" },
-    51: { text: "약한 이슬비", icon: "🌦️" },
-    53: { text: "이슬비", icon: "🌦️" },
-    55: { text: "강한 이슬비", icon: "🌧️" },
-    56: { text: "어는 이슬비", icon: "🌧️" },
-    57: { text: "강한 어는 이슬비", icon: "🌧️" },
-    61: { text: "약한 비", icon: "🌧️" },
-    63: { text: "비", icon: "🌧️" },
-    65: { text: "강한 비", icon: "🌧️" },
-    66: { text: "어는 비", icon: "🌧️" },
-    67: { text: "강한 어는 비", icon: "🌧️" },
-    71: { text: "약한 눈", icon: "🌨️" },
-    73: { text: "눈", icon: "🌨️" },
-    75: { text: "강한 눈", icon: "❄️" },
-    77: { text: "싸락눈", icon: "🌨️" },
-    80: { text: "약한 소나기", icon: "🌦️" },
-    81: { text: "소나기", icon: "🌧️" },
-    82: { text: "강한 소나기", icon: "⛈️" },
-    85: { text: "소낙눈", icon: "🌨️" },
-    86: { text: "강한 소낙눈", icon: "❄️" },
-    95: { text: "뇌우", icon: "⛈️" },
-    96: { text: "뇌우·우박", icon: "⛈️" },
-    99: { text: "강한 뇌우·우박", icon: "⛈️" },
-  };
+const WMO: Record<number, string> = {
+  0: "맑음",
+  1: "대체로 맑음",
+  2: "구름 조금",
+  3: "흐림",
+  45: "안개",
+  48: "착빙성 안개",
+  51: "약한 이슬비",
+  53: "이슬비",
+  55: "강한 이슬비",
+  56: "어는 이슬비",
+  57: "강한 어는 이슬비",
+  61: "약한 비",
+  63: "비",
+  65: "강한 비",
+  66: "어는 비",
+  67: "강한 어는 비",
+  71: "약한 눈",
+  73: "눈",
+  75: "강한 눈",
+  77: "싸락눈",
+  80: "약한 소나기",
+  81: "소나기",
+  82: "강한 소나기",
+  85: "소낙눈",
+  86: "강한 소낙눈",
+  95: "뇌우",
+  96: "뇌우·우박",
+  99: "강한 뇌우·우박",
+};
 
 export function wmoText(code: number): string {
-  return WMO[code]?.text ?? `코드 ${code}`;
-}
-
-export function wmoIcon(code: number, isDay = true): string {
-  const w = WMO[code];
-  if (!w) return "❓";
-  return !isDay && w.nightIcon ? w.nightIcon : w.icon;
+  return WMO[code] ?? `코드 ${code}`;
 }
 
 const DIR16 = [

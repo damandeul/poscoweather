@@ -218,7 +218,7 @@ export default function HourlyChart({ hours }: { hours: HourPoint[] }) {
       {/* 툴팁 */}
       {h && hover !== null && (
         <div
-          className="pointer-events-none absolute top-0 z-10 rounded-md border border-hairline bg-surface-2 px-3 py-2 text-xs shadow-lg"
+          className="pointer-events-none absolute top-0 z-10 rounded-lg border border-hairline bg-[#17171b]/95 px-3 py-2 text-xs shadow-[0_12px_28px_-8px_rgba(4,12,28,0.6)] backdrop-blur-sm"
           style={{
             left: `${Math.min(Math.max((x(hover) / W) * 100, 8), 78)}%`,
           }}

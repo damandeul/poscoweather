@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
-/* 관제실 스타일 다크 테마 (고정) — dataviz 레퍼런스 다크 팔레트 기반 */
+/* 관제실 스타일 다크 테마 (고정) — 단일 액센트(desaturated blue) + 딥 뉴트럴 */
 :root {
-  --background: #0d0d0d;
-  --foreground: #ffffff;
-  --surface: #1a1a19;
-  --surface-2: #232321;
-  --ink-2: #c3c2b7;
-  --muted: #898781;
-  --grid: #2c2c2a;
-  --hairline: rgba(255, 255, 255, 0.1);
-  --baseline: #383835;
+  --background: #0a0a0c;
+  --foreground: #f4f4f2;
+  --surface: #131316;
+  --surface-2: rgba(255, 255, 255, 0.045);
+  --ink-2: #c3c2ba;
+  --muted: #8a8880;
+  --grid: rgba(255, 255, 255, 0.06);
+  --hairline: rgba(255, 255, 255, 0.08);
+  --baseline: rgba(255, 255, 255, 0.14);
 
+  --accent: #3987e5;
   --s-blue: #3987e5;
   --s-aqua: #199e70;
 
@@ -19,6 +20,8 @@
   --st-warning: #fab219;
   --st-serious: #ec835a;
   --st-critical: #d03b3b;
+
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
@@ -31,23 +34,148 @@
   --color-grid: var(--grid);
   --color-hairline: var(--hairline);
   --color-baseline: var(--baseline);
+  --color-accent: var(--accent);
   --color-s-blue: var(--s-blue);
   --color-s-aqua: var(--s-aqua);
   --color-st-good: var(--st-good);
   --color-st-warning: var(--st-warning);
   --color-st-serious: var(--st-serious);
   --color-st-critical: var(--st-critical);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Pretendard Variable", Pretendard, var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
-    sans-serif;
+  font-family: "Pretendard Variable", Pretendard, var(--font-geist-sans),
+    system-ui, -apple-system, "Segoe UI", sans-serif;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 메시 그라디언트 배경 — 액센트 색으로 은은하게 틴트 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      52rem 36rem at 82% -12%,
+      rgba(57, 135, 229, 0.13),
+      transparent 62%
+    ),
+    radial-gradient(
+      44rem 32rem at -10% 28%,
+      rgba(57, 135, 229, 0.07),
+      transparent 60%
+    ),
+    radial-gradient(
+      40rem 44rem at 55% 118%,
+      rgba(25, 158, 112, 0.05),
+      transparent 60%
+    );
+}
+
+/* 노이즈 텍스처 오버레이 */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* 글래스 표면 — 하이라이트 엣지 + 배경색으로 틴트된 그림자 */
+.glass {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 32px -12px rgba(4, 12, 28, 0.55);
+  border-radius: 1rem;
+}
+
+.glass-inset {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.7rem;
+}
+
+/* 스태거드 등장 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: fadeInUp 0.7s var(--ease-spring) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* 인터랙티브 요소 공통 트랜지션 */
+.pressable {
+  transition: all 0.35s var(--ease-spring);
+}
+.pressable:hover {
+  transform: translateY(-1px);
+}
+.pressable:active {
+  transform: scale(0.98);
+}
+
+/* LIVE 인디케이터 펄스 */
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(208, 59, 59, 0.5);
+  }
+  60% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 4px rgba(208, 59, 59, 0);
+  }
+}
+.live-dot {
+  animation: livePulse 1.8s ease-out infinite;
+}
+
+/* 스크롤바 */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
 }
