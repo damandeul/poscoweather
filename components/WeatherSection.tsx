@@ -13,9 +13,13 @@ import {
   wmoText,
   Grade,
 } from "@/lib/weather";
+import { pickTrivia } from "@/lib/trivia";
 import HourlyChart from "./HourlyChart";
+import LeisurePanel from "./LeisurePanel";
+import RadarSatellite from "./RadarSatellite";
 import {
   AlertIcon,
+  LightbulbIcon,
   CheckIcon,
   CloudIcon,
   DropletIcon,
@@ -24,6 +28,7 @@ import {
   GustIcon,
   LeafIcon,
   MapPinIcon,
+  RadarIcon,
   RainDropsIcon,
   SunriseIcon,
   ThermometerIcon,
@@ -262,11 +267,29 @@ export default function WeatherSection({
         </div>
       </section>
 
+      {/* 오늘의 날씨 상식 — 현재 기상 조건과 매칭 */}
+      <aside
+        className="glass reveal flex items-start gap-3 px-5 py-3.5"
+        style={{ "--i": 1 } as React.CSSProperties}
+      >
+        <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-st-warning/30 bg-st-warning/10 text-st-warning">
+          <LightbulbIcon className="h-3.5 w-3.5" />
+        </span>
+        <div>
+          <p className="text-[10px] font-semibold tracking-widest text-muted">
+            지금 날씨 상식
+          </p>
+          <p className="mt-0.5 text-[13px] leading-relaxed text-ink-2">
+            {pickTrivia(weather)}
+          </p>
+        </div>
+      </aside>
+
       {/* 대기질 + 해양 */}
       <div className="grid gap-4 lg:grid-cols-2">
         <section
           className="glass reveal p-5"
-          style={{ "--i": 1 } as React.CSSProperties}
+          style={{ "--i": 2 } as React.CSSProperties}
         >
           <SectionTitle icon={<LeafIcon className="h-4 w-4" />}>
             대기질
@@ -331,7 +354,7 @@ export default function WeatherSection({
 
         <section
           className="glass reveal p-5"
-          style={{ "--i": 2 } as React.CSSProperties}
+          style={{ "--i": 3 } as React.CSSProperties}
         >
           <SectionTitle icon={<WavesIcon className="h-4 w-4" />}>
             해양 상태 (연안)
@@ -366,10 +389,26 @@ export default function WeatherSection({
         </section>
       </div>
 
+      {/* 등산·바다낚시 지수 */}
+      <LeisurePanel weather={weather} />
+
+      {/* 레이더 · 위성 */}
+      <section
+        className="glass reveal p-5"
+        style={{ "--i": 6 } as React.CSSProperties}
+      >
+        <SectionTitle icon={<RadarIcon className="h-4 w-4" />}>
+          레이더 · 위성 영상
+        </SectionTitle>
+        <div className="mt-4">
+          <RadarSatellite lat={site.lat} lon={site.lon} siteName={site.name} />
+        </div>
+      </section>
+
       {/* 24시간 예보 차트 */}
       <section
         className="glass reveal p-5"
-        style={{ "--i": 3 } as React.CSSProperties}
+        style={{ "--i": 7 } as React.CSSProperties}
       >
         <SectionTitle icon={<GaugeIcon className="h-4 w-4" />}>
           24시간 예보
@@ -382,7 +421,7 @@ export default function WeatherSection({
       {/* 일별 예보 */}
       <section
         className="glass reveal p-5"
-        style={{ "--i": 4 } as React.CSSProperties}
+        style={{ "--i": 8 } as React.CSSProperties}
       >
         <SectionTitle icon={<SunriseIcon className="h-4 w-4" />}>
           일별 예보

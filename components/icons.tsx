@@ -223,6 +223,54 @@ export const UmbrellaIcon = (p: IconProps) => (
   </Base>
 );
 
+export const MountainIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="m8 3 4 8 5-5 5 15H2L8 3Z" />
+  </Base>
+);
+
+export const FishIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M15.5 12c0 3.2-3.3 5.5-7 5.5-2.5 0-6-2.6-6-5.5s3.5-5.5 6-5.5c3.7 0 7 2.3 7 5.5Z" />
+    <path d="m15.5 12 6-4.5-1.7 4.5 1.7 4.5-6-4.5Z" />
+    <path d="M6 10.5h.01" />
+  </Base>
+);
+
+export const LightbulbIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M9 18h6M10 22h4" />
+    <path d="M12 2a7 7 0 0 0-4.1 12.66c.66.48 1.1 1.24 1.1 2.06V18h6v-1.28c0-.82.44-1.58 1.1-2.06A7 7 0 0 0 12 2Z" />
+  </Base>
+);
+
+export const RadarIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M19.07 4.93A10 10 0 0 0 6.99 3.34M4 6h.01M2.29 9.62a10 10 0 1 0 19.02-1.27M16.24 7.76a6 6 0 1 0-8.01 8.91M12 18h.01M17.99 11.66a6 6 0 0 1-2.22 4.75" />
+    <circle cx="12" cy="12" r="2" />
+    <path d="m13.41 10.59 5.66-5.66" />
+  </Base>
+);
+
+export const SatelliteIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M13 7 9 3 5 7l4 4M17 11l-4 4 4 4 4-4-4-4M8 12l4 4M16 8l-1.5 1.5" />
+    <path d="M17 21a4 4 0 0 0 4-4" />
+  </Base>
+);
+
+export const PlayIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="m6 4 14 8-14 8V4Z" />
+  </Base>
+);
+
+export const PauseIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M7 4h3v16H7zM14 4h3v16h-3z" />
+  </Base>
+);
+
 /* 풍향 화살표 — deg 방향에서 불어오는 바람을 나타냄 (화살표는 바람이 가는 방향) */
 export function WindArrowIcon({
   deg,
