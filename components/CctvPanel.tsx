@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SiteId } from "@/lib/sites";
-import type { CctvCamera } from "@/app/api/cctv/route";
+import { SITES, SiteId } from "@/lib/sites";
+import { fetchCctvCameras, type CctvCamera } from "@/lib/cctv";
 import { VideoIcon } from "./icons";
 
 interface CctvResponse {
   configured: boolean;
   cameras: CctvCamera[];
 }
+
+// 서버(Vercel 등 클라우드)에서는 ITS API가 IP 차단으로 실패할 수 있어,
+// 브라우저(한국 IP)에서 직접 호출하는 폴백용 공개 키.
+const PUBLIC_ITS_KEY = process.env.NEXT_PUBLIC_ITS_API_KEY;
 
 export default function CctvPanel({ siteId }: { siteId: SiteId }) {
   const [data, setData] = useState<CctvResponse | null>(null);
@@ -20,17 +24,34 @@ export default function CctvPanel({ siteId }: { siteId: SiteId }) {
   // 사이트 전환 시 Dashboard에서 key={siteId}로 리마운트되므로 상태 초기화가 필요 없다
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/cctv?site=${siteId}`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((json: CctvResponse) => {
-        if (cancelled) return;
-        setData(json);
-        if (json.cameras.length > 0) setSelected(json.cameras[0]);
-      })
-      .catch((e) => !cancelled && setError(String(e)));
+
+    const load = async () => {
+      let result: CctvResponse | null = null;
+      try {
+        const r = await fetch(`/api/cctv?site=${siteId}`);
+        if (r.ok) result = (await r.json()) as CctvResponse;
+      } catch {
+        // 서버 라우트 실패 — 아래 브라우저 직접 호출 폴백으로 진행
+      }
+
+      // 서버가 ITS에 접근하지 못한 경우(클라우드 IP 차단) 브라우저에서 직접 조회
+      if ((!result || result.cameras.length === 0) && PUBLIC_ITS_KEY) {
+        const cameras = await fetchCctvCameras(SITES[siteId], PUBLIC_ITS_KEY);
+        if (cameras.length > 0 || !result) {
+          result = { configured: true, cameras };
+        }
+      }
+
+      if (cancelled) return;
+      if (!result) {
+        setError("서버 및 ITS API 모두 응답하지 않습니다.");
+        return;
+      }
+      setData(result);
+      if (result.cameras.length > 0) setSelected(result.cameras[0]);
+    };
+
+    load().catch((e) => !cancelled && setError(String(e)));
     return () => {
       cancelled = true;
     };
